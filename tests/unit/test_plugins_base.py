@@ -288,7 +288,8 @@ class TestResolveExecutable:
         _make_executable(workspace_exec)
         _make_executable(path_exec)
 
-        with patch("ansible_devtools_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
+        mock_target = "ansible_devtools_mcp.plugins.sys.executable"
+        with patch(mock_target, str(tmp_path / "python" / "python3")):
             resolution = resolve_executable(
                 "ansible-lint",
                 cwd=tmp_path,
@@ -303,7 +304,8 @@ class TestResolveExecutable:
         path_exec = path_dir / "ansible-lint"
         _make_executable(path_exec)
 
-        with patch("ansible_devtools_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
+        mock_target = "ansible_devtools_mcp.plugins.sys.executable"
+        with patch(mock_target, str(tmp_path / "python" / "python3")):
             resolution = resolve_executable(
                 "ansible-lint",
                 cwd=tmp_path,
@@ -314,7 +316,8 @@ class TestResolveExecutable:
         assert resolution.source == "path"
 
     def test_not_found_reports_checked_candidates(self, tmp_path: Path) -> None:
-        with patch("ansible_devtools_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
+        mock_target = "ansible_devtools_mcp.plugins.sys.executable"
+        with patch(mock_target, str(tmp_path / "python" / "python3")):
             resolution = resolve_executable(
                 "ansible-lint",
                 cwd=tmp_path,

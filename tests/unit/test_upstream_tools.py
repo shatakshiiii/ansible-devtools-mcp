@@ -66,7 +66,8 @@ async def test_get_ade_environment_info_collects_expected_fields(tmp_path: Path)
             )
         return _exec_result(status="failed", stderr="unexpected command")
 
-    with patch("ansible_devtools_mcp.upstream_tools.exec_command", new=AsyncMock(side_effect=fake_exec)):
+    mock_target = "ansible_devtools_mcp.upstream_tools.exec_command"
+    with patch(mock_target, new=AsyncMock(side_effect=fake_exec)):
         result = await get_ade_environment_info(tmp_path)
 
     assert result["success"] is True
@@ -103,7 +104,10 @@ def test_format_environment_info_handles_missing_values() -> None:
 
 async def test_check_and_install_adt_uses_pipx_fallback(tmp_path: Path) -> None:
     with (
-        patch("ansible_devtools_mcp.upstream_tools._check_adt_installed", new=AsyncMock(return_value=False)),
+        patch(
+            "ansible_devtools_mcp.upstream_tools._check_adt_installed",
+            new=AsyncMock(return_value=False),
+        ),
         patch(
             "ansible_devtools_mcp.upstream_tools.exec_command",
             new=AsyncMock(

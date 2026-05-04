@@ -62,7 +62,11 @@ def _discover_external_plugins() -> list[type[AnsibleMCPPlugin]]:
         try:
             loaded = ep.load()
         except Exception as exc:
-            logger.warning("Failed to load ansible-devtools-mcp plugin entry point '%s': %s", ep.name, exc)
+            logger.warning(
+                "Failed to load ansible-devtools-mcp plugin entry point '%s': %s",
+                ep.name,
+                exc,
+            )
             continue
         if isinstance(loaded, type) and issubclass(loaded, AnsibleMCPPlugin):
             discovered.append(loaded)
