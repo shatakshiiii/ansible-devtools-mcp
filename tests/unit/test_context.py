@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ansible_mcp.context import detect_workspace
+from ansible_devtools_mcp.context import detect_workspace
 
 
 def test_detect_workspace_flags(tmp_path: Path) -> None:

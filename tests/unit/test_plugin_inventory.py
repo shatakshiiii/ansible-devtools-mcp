@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import AsyncMock, patch
 
-from ansible_mcp.context import WorkspaceContext
-from ansible_mcp.plugins.inventory import InventoryPlugin
-from ansible_mcp.token_budget import TokenBudget
+from ansible_devtools_mcp.context import WorkspaceContext
+from ansible_devtools_mcp.plugins.inventory import InventoryPlugin
+from ansible_devtools_mcp.token_budget import TokenBudget
 
 
 def _workspace(root: Path) -> WorkspaceContext:
@@ -66,7 +66,7 @@ class TestInventoryPluginExecute:
         plugin = InventoryPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok(stdout='{"all": {}}'))
         with patch(
-            "ansible_mcp.plugins.inventory.exec_command", new=mock
+            "ansible_devtools_mcp.plugins.inventory.exec_command", new=mock
         ):
             result = await plugin.handle_tool_call(
                 "inventory_parse", {"inventory_path": "hosts.ini"}
@@ -82,7 +82,7 @@ class TestInventoryPluginExecute:
         plugin = InventoryPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok(stdout="@all:"))
         with patch(
-            "ansible_mcp.plugins.inventory.exec_command", new=mock
+            "ansible_devtools_mcp.plugins.inventory.exec_command", new=mock
         ):
             result = await plugin.handle_tool_call(
                 "inventory_graph", {"inventory_path": "hosts.ini"}

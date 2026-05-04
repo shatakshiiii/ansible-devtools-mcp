@@ -62,7 +62,7 @@ def _target_for_client(
             "servers",
         )
     if client == "claude":
-        return home_dir / ".claude" / "mcp_servers.json", "mcpServers"
+        return home_dir / ".claude" / "mcp.json", "mcpServers"
     if client == "cursor":
         return home_dir / ".cursor" / "mcp.json", "mcpServers"
 
@@ -71,7 +71,7 @@ def _target_for_client(
 
 def _build_server_definition(client: ClientName) -> dict[str, Any]:
     definition: dict[str, Any] = {
-        "command": "ansible-mcp",
+        "command": "ansible-devtools-mcp",
         "args": ["serve", "--stdio"],
     }
     if client == "copilot":
@@ -101,7 +101,7 @@ def install_client_config(
     *,
     client: ClientName,
     scope: InstallScope,
-    server_name: str = "ansible-mcp",
+    server_name: str = "ansible-devtools-mcp",
     workspace_root: Path | None = None,
     home_dir: Path | None = None,
     platform: str | None = None,

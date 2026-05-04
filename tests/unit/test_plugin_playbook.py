@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import AsyncMock, patch
 
-from ansible_mcp.context import WorkspaceContext
-from ansible_mcp.plugins.playbook import PlaybookPlugin
-from ansible_mcp.token_budget import TokenBudget
+from ansible_devtools_mcp.context import WorkspaceContext
+from ansible_devtools_mcp.plugins.playbook import PlaybookPlugin
+from ansible_devtools_mcp.token_budget import TokenBudget
 
 
 def _workspace(root: Path) -> WorkspaceContext:
@@ -66,7 +66,7 @@ class TestPlaybookPluginExecute:
         plugin = PlaybookPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok())
         with patch(
-            "ansible_mcp.plugins.playbook.exec_command", new=mock
+            "ansible_devtools_mcp.plugins.playbook.exec_command", new=mock
         ):
             result = await plugin.handle_tool_call(
                 "playbook_syntax_check",
@@ -83,7 +83,7 @@ class TestPlaybookPluginExecute:
         plugin = PlaybookPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok())
         with patch(
-            "ansible_mcp.plugins.playbook.exec_command", new=mock
+            "ansible_devtools_mcp.plugins.playbook.exec_command", new=mock
         ):
             result = await plugin.handle_tool_call(
                 "playbook_run", {"playbook_path": "site.yml"}
@@ -100,7 +100,7 @@ class TestPlaybookPluginExecute:
         plugin = PlaybookPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok())
         with patch(
-            "ansible_mcp.plugins.playbook.exec_command", new=mock
+            "ansible_devtools_mcp.plugins.playbook.exec_command", new=mock
         ):
             result = await plugin.handle_tool_call(
                 "playbook_run",
@@ -118,7 +118,7 @@ class TestPlaybookPluginExecute:
         plugin = PlaybookPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok())
         with patch(
-            "ansible_mcp.plugins.playbook.exec_command", new=mock
+            "ansible_devtools_mcp.plugins.playbook.exec_command", new=mock
         ):
             result = await plugin.handle_tool_call(
                 "playbook_run",
@@ -141,7 +141,7 @@ class TestPlaybookPluginExecute:
         plugin = PlaybookPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok())
         with patch(
-            "ansible_mcp.plugins.playbook.exec_command", new=mock
+            "ansible_devtools_mcp.plugins.playbook.exec_command", new=mock
         ):
             result = await plugin.handle_tool_call(
                 "playbook_run",
@@ -178,7 +178,7 @@ class TestPlaybookPluginExecute:
             return_value=_exec_ok(exit_code=4, stderr="syntax error")
         )
         with patch(
-            "ansible_mcp.plugins.playbook.exec_command", new=mock
+            "ansible_devtools_mcp.plugins.playbook.exec_command", new=mock
         ):
             result = await plugin.handle_tool_call(
                 "playbook_syntax_check",

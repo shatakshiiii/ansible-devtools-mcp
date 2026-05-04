@@ -6,12 +6,12 @@ from pathlib import Path
 
 import pytest
 
-from ansible_mcp.context import detect_workspace
-from ansible_mcp.plugins import resolve_executable
-from ansible_mcp.plugins.inventory import InventoryPlugin
-from ansible_mcp.plugins.lint import LintPlugin
-from ansible_mcp.plugins.playbook import PlaybookPlugin
-from ansible_mcp.token_budget import TokenBudget
+from ansible_devtools_mcp.context import detect_workspace
+from ansible_devtools_mcp.plugins import resolve_executable
+from ansible_devtools_mcp.plugins.inventory import InventoryPlugin
+from ansible_devtools_mcp.plugins.lint import LintPlugin
+from ansible_devtools_mcp.plugins.playbook import PlaybookPlugin
+from ansible_devtools_mcp.token_budget import TokenBudget
 
 pytestmark = pytest.mark.integration
 

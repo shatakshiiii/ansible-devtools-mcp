@@ -4,8 +4,8 @@ import argparse
 import os
 from pathlib import Path
 
-from ansible_mcp.installer import install_client_config
-from ansible_mcp.server import run_server
+from ansible_devtools_mcp.installer import install_client_config
+from ansible_devtools_mcp.server import run_server
 
 
 def _workspace_from_env_or_default(explicit: str | None) -> Path:
@@ -43,7 +43,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     install_parser = subparsers.add_parser(
-        "install", help="Configure ansible-mcp for a supported MCP client"
+        "install", help="Configure ansible-devtools-mcp for a supported MCP client"
     )
     install_parser.add_argument(
         "--client",
@@ -65,7 +65,7 @@ def build_parser() -> argparse.ArgumentParser:
     install_parser.add_argument(
         "--name",
         type=str,
-        default="ansible-mcp",
+        default="ansible-devtools-mcp",
         help="Server name key in client config",
     )
 

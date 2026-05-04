@@ -6,7 +6,7 @@
   tasks:
     - name: Print hello
       ansible.builtin.debug:
-        msg: "Hello from ansible-mcp E2E test"
+        msg: "Hello from ansible-devtools-mcp E2E test"
 
     - name: Set a fact
       ansible.builtin.set_fact:

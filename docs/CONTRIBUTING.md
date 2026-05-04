@@ -1,20 +1,20 @@
 # Contributing
 
-This document is for maintainers and contributors of `ansible-mcp`.
+This document is for maintainers and contributors of `ansible-devtools-mcp`.
 
 ## Development setup
 
 ```bash
-cd /Users/sunny/Ansible/ansible-mcp
+cd /Users/shamishr/Ansible/ansible-devtools-mcp
 python -m venv .venv
 source .venv/bin/activate
-pip install -e .[dev]
+pip install -e .
 ```
 
 ## Local run
 
 ```bash
-ansible-mcp serve --stdio
+ansible-devtools-mcp serve --stdio
 ```
 
 ## Test commands

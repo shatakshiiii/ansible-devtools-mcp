@@ -12,25 +12,25 @@ import anyio
 from mcp.server.fastmcp import FastMCP
 from mcp.server.stdio import stdio_server
 
-from ansible_mcp.context import WorkspaceContext, detect_workspace
-from ansible_mcp.plugins import AnsibleMCPPlugin
-from ansible_mcp.plugins.inventory import InventoryPlugin
-from ansible_mcp.plugins.lint import LintPlugin
-from ansible_mcp.plugins.playbook import PlaybookPlugin
-from ansible_mcp.router import PluginRouter
-from ansible_mcp.token_budget import TokenBudget
-from ansible_mcp.upstream import (
+from ansible_devtools_mcp.context import WorkspaceContext, detect_workspace
+from ansible_devtools_mcp.plugins import AnsibleMCPPlugin
+from ansible_devtools_mcp.plugins.inventory import InventoryPlugin
+from ansible_devtools_mcp.plugins.lint import LintPlugin
+from ansible_devtools_mcp.plugins.playbook import PlaybookPlugin
+from ansible_devtools_mcp.router import PluginRouter
+from ansible_devtools_mcp.token_budget import TokenBudget
+from ansible_devtools_mcp.upstream import (
     UPSTREAM_ZEN_OF_ANSIBLE,
     upstream_tool_catalog,
 )
-from ansible_mcp.upstream_tools import (
+from ansible_devtools_mcp.upstream_tools import (
     check_and_install_adt,
     create_ansible_project,
     get_ade_environment_info,
     run_ansible_navigator,
     setup_development_environment,
 )
-from ansible_mcp.upstream_tools import (
+from ansible_devtools_mcp.upstream_tools import (
     define_and_build_execution_env as define_and_build_execution_env_artifacts,
 )
 
@@ -58,11 +58,11 @@ def _builtin_plugins() -> list[type[AnsibleMCPPlugin]]:
 def _discover_external_plugins() -> list[type[AnsibleMCPPlugin]]:
     discovered: list[type[AnsibleMCPPlugin]] = []
 
-    for ep in entry_points(group="ansible_mcp.plugins"):
+    for ep in entry_points(group="ansible_devtools_mcp.plugins"):
         try:
             loaded = ep.load()
         except Exception as exc:
-            logger.warning("Failed to load ansible-mcp plugin entry point '%s': %s", ep.name, exc)
+            logger.warning("Failed to load ansible-devtools-mcp plugin entry point '%s': %s", ep.name, exc)
             continue
         if isinstance(loaded, type) and issubclass(loaded, AnsibleMCPPlugin):
             discovered.append(loaded)
@@ -102,14 +102,14 @@ def create_server(
     router = build_router(workspace, budget)
 
     mcp = FastMCP(
-        "ansible-mcp",
+        "ansible-devtools-mcp",
         instructions="Standalone MCP server for Ansible lint, playbook, and inventory tooling.",
         json_response=True,
     )
 
     @mcp.tool()
     def list_ansible_tools() -> list[dict[str, Any]]:
-        """List ansible-mcp tool metadata with compact descriptions."""
+        """List ansible-devtools-mcp tool metadata with compact descriptions."""
 
         return router.list_tool_dicts()
 
@@ -169,7 +169,7 @@ def create_server(
             raw = result.get("raw", {})
             if isinstance(raw, dict):
                 raw["notice"] = (
-                    "'fix=true' requested, but standalone ansible-mcp currently runs "
+                    "'fix=true' requested, but standalone ansible-devtools-mcp currently runs "
                     "read-only lint mode. Auto-fix parity is planned."
                 )
         return result

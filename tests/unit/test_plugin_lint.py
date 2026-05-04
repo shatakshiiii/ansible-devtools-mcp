@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import AsyncMock, patch
 
-from ansible_mcp.context import WorkspaceContext
-from ansible_mcp.plugins.lint import LintPlugin
-from ansible_mcp.token_budget import TokenBudget
+from ansible_devtools_mcp.context import WorkspaceContext
+from ansible_devtools_mcp.plugins.lint import LintPlugin
+from ansible_devtools_mcp.token_budget import TokenBudget
 
 
 def _workspace(root: Path) -> WorkspaceContext:
@@ -64,7 +64,7 @@ class TestLintPluginExecute:
         (tmp_path / "site.yml").touch()
         plugin = LintPlugin(_workspace(tmp_path), _budget())
         with patch(
-            "ansible_mcp.plugins.lint.exec_command",
+            "ansible_devtools_mcp.plugins.lint.exec_command",
             new=AsyncMock(return_value=_exec_ok()),
         ):
             result = await plugin.handle_tool_call(
@@ -76,7 +76,7 @@ class TestLintPluginExecute:
         (tmp_path / "bad.yml").touch()
         plugin = LintPlugin(_workspace(tmp_path), _budget())
         with patch(
-            "ansible_mcp.plugins.lint.exec_command",
+            "ansible_devtools_mcp.plugins.lint.exec_command",
             new=AsyncMock(
                 return_value=_exec_ok(exit_code=2, stderr="lint err")
             ),
@@ -91,7 +91,7 @@ class TestLintPluginExecute:
         (tmp_path / ".ansible-lint").touch()
         plugin = LintPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok())
-        with patch("ansible_mcp.plugins.lint.exec_command", new=mock):
+        with patch("ansible_devtools_mcp.plugins.lint.exec_command", new=mock):
             await plugin.handle_tool_call(
                 "lint",
                 {
@@ -129,7 +129,7 @@ class TestLintPluginExecute:
     async def test_default_path_is_dot(self, tmp_path: Path) -> None:
         plugin = LintPlugin(_workspace(tmp_path), _budget())
         mock = AsyncMock(return_value=_exec_ok())
-        with patch("ansible_mcp.plugins.lint.exec_command", new=mock):
+        with patch("ansible_devtools_mcp.plugins.lint.exec_command", new=mock):
             await plugin.handle_tool_call("lint", {})
         assert mock.call_args is not None
         cmd: list[str] = mock.call_args[0][0]

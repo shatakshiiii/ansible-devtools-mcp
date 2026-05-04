@@ -8,7 +8,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from ansible_mcp.plugins import exec_command, require_non_empty, resolve_workspace_path
+from ansible_devtools_mcp.plugins import exec_command, require_non_empty, resolve_workspace_path
 
 _COMMON_VENV_NAMES = (
     "ansible-dev",

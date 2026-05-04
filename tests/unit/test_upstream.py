@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ansible_mcp.upstream import upstream_tool_catalog, upstream_tool_names
+from ansible_devtools_mcp.upstream import upstream_tool_catalog, upstream_tool_names
 
 
 def test_upstream_tool_names_count_and_order() -> None:

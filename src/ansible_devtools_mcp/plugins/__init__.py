@@ -9,8 +9,8 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-from ansible_mcp.context import WorkspaceContext
-from ansible_mcp.token_budget import TokenBudget
+from ansible_devtools_mcp.context import WorkspaceContext
+from ansible_devtools_mcp.token_budget import TokenBudget
 
 
 @dataclass(slots=True)

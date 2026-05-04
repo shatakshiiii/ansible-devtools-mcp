@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from ansible_mcp.plugins import (
+from ansible_devtools_mcp.plugins import (
     ExecutableResolution,
     ToolResult,
     ToolSpec,
@@ -151,7 +151,7 @@ class TestExecCommand:
         with patch(
             "asyncio.create_subprocess_exec",
             new=AsyncMock(return_value=proc),
-        ), patch("ansible_mcp.plugins.resolve_executable", return_value=resolution):
+        ), patch("ansible_devtools_mcp.plugins.resolve_executable", return_value=resolution):
             result = await exec_command(["echo", "hello"], cwd=tmp_path)
         assert result["status"] == "success"
         assert result["stdout"] == "hello"
@@ -171,7 +171,7 @@ class TestExecCommand:
         with patch(
             "asyncio.create_subprocess_exec",
             new=AsyncMock(return_value=proc),
-        ), patch("ansible_mcp.plugins.resolve_executable", return_value=resolution):
+        ), patch("ansible_devtools_mcp.plugins.resolve_executable", return_value=resolution):
             result = await exec_command(["fail"], cwd=tmp_path)
         assert result["status"] == "failed"
         assert result["exit_code"] == 2
@@ -210,7 +210,7 @@ class TestExecCommand:
                 "asyncio.wait_for",
                 new=AsyncMock(side_effect=TimeoutError),
             ),
-            patch("ansible_mcp.plugins.resolve_executable", return_value=resolution),
+            patch("ansible_devtools_mcp.plugins.resolve_executable", return_value=resolution),
         ):
             result = await exec_command(
                 ["slow"], cwd=tmp_path, timeout_seconds=1
@@ -237,7 +237,7 @@ class TestExecCommandEnv:
             checked=["/bin/cmd"],
         )
         with patch("asyncio.create_subprocess_exec", new=create_mock), patch(
-            "ansible_mcp.plugins.resolve_executable", return_value=resolution
+            "ansible_devtools_mcp.plugins.resolve_executable", return_value=resolution
         ):
             await exec_command(
                 ["cmd"],
@@ -288,7 +288,7 @@ class TestResolveExecutable:
         _make_executable(workspace_exec)
         _make_executable(path_exec)
 
-        with patch("ansible_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
+        with patch("ansible_devtools_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
             resolution = resolve_executable(
                 "ansible-lint",
                 cwd=tmp_path,
@@ -303,7 +303,7 @@ class TestResolveExecutable:
         path_exec = path_dir / "ansible-lint"
         _make_executable(path_exec)
 
-        with patch("ansible_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
+        with patch("ansible_devtools_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
             resolution = resolve_executable(
                 "ansible-lint",
                 cwd=tmp_path,
@@ -314,7 +314,7 @@ class TestResolveExecutable:
         assert resolution.source == "path"
 
     def test_not_found_reports_checked_candidates(self, tmp_path: Path) -> None:
-        with patch("ansible_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
+        with patch("ansible_devtools_mcp.plugins.sys.executable", str(tmp_path / "python" / "python3")):
             resolution = resolve_executable(
                 "ansible-lint",
                 cwd=tmp_path,
@@ -345,7 +345,7 @@ class TestExecCommandResolverIntegration:
         )
 
         with (
-            patch("ansible_mcp.plugins.resolve_executable", return_value=resolution),
+            patch("ansible_devtools_mcp.plugins.resolve_executable", return_value=resolution),
             patch("asyncio.create_subprocess_exec", new=create_mock),
         ):
             result = await exec_command(["ansible-lint", "playbook.yml"], cwd=tmp_path)
@@ -368,7 +368,7 @@ class TestExecCommandResolverIntegration:
         )
 
         with (
-            patch("ansible_mcp.plugins.resolve_executable", return_value=resolution),
+            patch("ansible_devtools_mcp.plugins.resolve_executable", return_value=resolution),
             patch("asyncio.create_subprocess_exec", new=create_mock),
         ):
             result = await exec_command(["ansible-lint", "playbook.yml"], cwd=tmp_path)

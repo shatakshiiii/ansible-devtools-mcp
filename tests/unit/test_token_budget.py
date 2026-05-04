@@ -1,4 +1,4 @@
-from ansible_mcp.token_budget import TokenBudget, compress_description, truncate_text
+from ansible_devtools_mcp.token_budget import TokenBudget, compress_description, truncate_text
 
 
 def test_compress_description_truncates_to_budget() -> None:

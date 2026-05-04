@@ -12,7 +12,7 @@ This repo includes `.github/workflows/publish.yml`.
 
 ### One-time setup
 
-1. Create `ansible-mcp` project on TestPyPI/PyPI (or reserve name).
+1. Create `ansible-devtools-mcp` project on TestPyPI/PyPI (or reserve name).
 2. Configure Trusted Publishing for this repository/workflow.
 3. Create GitHub environments used by the workflow:
    - `testpypi`
@@ -38,9 +38,9 @@ The tag triggers PyPI publish workflow.
 - Run `pytest tests/unit -v --tb=short`
 - Run `pytest tests/integration -v --tb=short -m integration`
 - Validate install flow:
-  - `uv tool install ansible-mcp`
-  - `ansible-mcp install --client copilot`
-  - `ansible-mcp install --client claude`
-  - `ansible-mcp install --client cursor`
+  - `uv tool install ansible-devtools-mcp`
+  - `ansible-devtools-mcp install --client copilot`
+  - `ansible-devtools-mcp install --client claude`
+  - `ansible-devtools-mcp install --client cursor`
 - Smoke check server startup:
-  - `ansible-mcp serve --stdio`
+  - `ansible-devtools-mcp serve --stdio`

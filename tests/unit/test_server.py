@@ -6,10 +6,10 @@ from pathlib import Path
 import pytest
 from mcp.server.fastmcp import FastMCP
 
-from ansible_mcp.context import detect_workspace
-from ansible_mcp.router import PluginRouter
-from ansible_mcp.server import _BlankLineFilteringStdin, build_router, create_server
-from ansible_mcp.token_budget import TokenBudget
+from ansible_devtools_mcp.context import detect_workspace
+from ansible_devtools_mcp.router import PluginRouter
+from ansible_devtools_mcp.server import _BlankLineFilteringStdin, build_router, create_server
+from ansible_devtools_mcp.token_budget import TokenBudget
 
 # ---------------------------------------------------------------------------
 # create_server

@@ -3,12 +3,12 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ansible-mcp"
+name = "ansible-devtools-mcp"
 version = "1.0.1"
 description = "Standalone, vendor-agnostic MCP server for Ansible tooling"
 readme = "README.md"
 requires-python = ">=3.12"
-authors = [{ name = "ansible-mcp maintainers" }]
+authors = [{ name = "ansible-devtools-mcp maintainers" }]
 license = "MIT"
 dependencies = [
   "mcp[cli]>=1.2.0",
@@ -28,18 +28,18 @@ dev = [
 ]
 
 [project.scripts]
-ansible-mcp = "ansible_mcp.__main__:main"
+ansible-devtools-mcp = "ansible_devtools_mcp.__main__:main"
 
-[project.entry-points."ansible_mcp.plugins"]
-lint = "ansible_mcp.plugins.lint:LintPlugin"
-playbook = "ansible_mcp.plugins.playbook:PlaybookPlugin"
-inventory = "ansible_mcp.plugins.inventory:InventoryPlugin"
+[project.entry-points."ansible_devtools_mcp.plugins"]
+lint = "ansible_devtools_mcp.plugins.lint:LintPlugin"
+playbook = "ansible_devtools_mcp.plugins.playbook:PlaybookPlugin"
+inventory = "ansible_devtools_mcp.plugins.inventory:InventoryPlugin"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-ansible_mcp = [
+ansible_devtools_mcp = [
   "resources/docs/*.md",
   "resources/docs/*.json",
   "resources/docs/*.yml",

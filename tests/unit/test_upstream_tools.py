@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import AsyncMock, patch
 
-from ansible_mcp.upstream_tools import (
+from ansible_devtools_mcp.upstream_tools import (
     check_and_install_adt,
     create_ansible_project,
     define_and_build_execution_env,
@@ -66,7 +66,7 @@ async def test_get_ade_environment_info_collects_expected_fields(tmp_path: Path)
             )
         return _exec_result(status="failed", stderr="unexpected command")
 
-    with patch("ansible_mcp.upstream_tools.exec_command", new=AsyncMock(side_effect=fake_exec)):
+    with patch("ansible_devtools_mcp.upstream_tools.exec_command", new=AsyncMock(side_effect=fake_exec)):
         result = await get_ade_environment_info(tmp_path)
 
     assert result["success"] is True
@@ -103,9 +103,9 @@ def test_format_environment_info_handles_missing_values() -> None:
 
 async def test_check_and_install_adt_uses_pipx_fallback(tmp_path: Path) -> None:
     with (
-        patch("ansible_mcp.upstream_tools._check_adt_installed", new=AsyncMock(return_value=False)),
+        patch("ansible_devtools_mcp.upstream_tools._check_adt_installed", new=AsyncMock(return_value=False)),
         patch(
-            "ansible_mcp.upstream_tools.exec_command",
+            "ansible_devtools_mcp.upstream_tools.exec_command",
             new=AsyncMock(
                 side_effect=[
                     _exec_result(status="failed", stderr="pip failed"),
@@ -132,10 +132,10 @@ async def test_setup_development_environment_auto_detects_os(tmp_path: Path) -> 
 
     with (
         patch(
-            "ansible_mcp.upstream_tools.check_and_install_adt",
+            "ansible_devtools_mcp.upstream_tools.check_and_install_adt",
             new=AsyncMock(return_value={"success": True, "output": "ADT installed"}),
         ),
-        patch("ansible_mcp.upstream_tools.exec_command", new=mock_exec),
+        patch("ansible_devtools_mcp.upstream_tools.exec_command", new=mock_exec),
     ):
         result = await setup_development_environment(tmp_path)
 
@@ -145,7 +145,7 @@ async def test_setup_development_environment_auto_detects_os(tmp_path: Path) -> 
 
 async def test_create_ansible_project_runs_ansible_creator(tmp_path: Path) -> None:
     mock_exec = AsyncMock(return_value=_exec_result(status="success", stdout="ok"))
-    with patch("ansible_mcp.upstream_tools.exec_command", new=mock_exec):
+    with patch("ansible_devtools_mcp.upstream_tools.exec_command", new=mock_exec):
         result = await create_ansible_project(
             tmp_path,
             project_type="playbook",
@@ -228,10 +228,10 @@ async def test_run_ansible_navigator_execution_mode(tmp_path: Path) -> None:
     mock_exec = AsyncMock(return_value=_exec_result(status="success", stdout="navigator ok"))
     with (
         patch(
-            "ansible_mcp.upstream_tools._resolve_navigator_path",
+            "ansible_devtools_mcp.upstream_tools._resolve_navigator_path",
             return_value=("/usr/bin/ansible-navigator", None),
         ),
-        patch("ansible_mcp.upstream_tools.exec_command", new=mock_exec),
+        patch("ansible_devtools_mcp.upstream_tools.exec_command", new=mock_exec),
     ):
         result = await run_ansible_navigator(
             tmp_path,

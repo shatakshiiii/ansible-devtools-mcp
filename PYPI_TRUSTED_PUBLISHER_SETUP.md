@@ -4,7 +4,7 @@ This document walks you through configuring PyPI Trusted Publisher (OIDC) to ena
 
 ## Current Status
 
-- ✅ Package `ansible-mcp` created on PyPI
+- ✅ Package `ansible-devtools-mcp` created on PyPI
 - ✅ GitHub workflow `.github/workflows/publish.yml` configured and tested
 - ✅ TestPyPI trusted publisher working (v0.1.0 successfully published)
 - ❌ **PyPI production trusted publisher: BLOCKED** (configuration pending)
@@ -31,7 +31,7 @@ This means: **PyPI is rejecting the OIDC token because no trusted publisher is c
 
 ### Step 2: Navigate to Project Settings
 
-1. Go to https://pypi.org/project/ansible-mcp/
+1. Go to https://pypi.org/project/ansible-devtools-mcp/
 2. Click **"Manage"** in the top navigation
 3. Look for **"Publishers"** or **"Publishing"** section in the left sidebar
 4. Click **"Add a new pending publisher"** or similar option
@@ -44,7 +44,7 @@ Fill in the following fields:
 |-------|-------|
 | **Provider** | GitHub |
 | **Owner** | `shreyanshjain7174` |
-| **Repository** | `ansible-mcp` |
+| **Repository** | `ansible-devtools-mcp` |
 | **Workflow name** | `publish.yml` |
 | **Workflow ref** | `refs/heads/main` (for manual dispatches and tag-based publishes on main) |
 | **Environment name** | `pypi` |
@@ -88,12 +88,12 @@ Once publish succeeds, verify the package is live:
 
 ```bash
 # Check via PyPI API
-curl -s https://pypi.org/pypi/ansible-mcp/json | python -m json.tool | head -50
+curl -s https://pypi.org/pypi/ansible-devtools-mcp/json | python -m json.tool | head -50
 
 # Should return v0.1.0, v1, and any newer versions you publish
 ```
 
-Or visit: https://pypi.org/project/ansible-mcp/
+Or visit: https://pypi.org/project/ansible-devtools-mcp/
 
 ### Step 7: Validate Fresh Install (Optional but Recommended)
 
@@ -101,10 +101,10 @@ Test a fresh installation from production PyPI:
 
 ```bash
 # Fresh install from production PyPI
-uv tool install ansible-mcp
+uv tool install ansible-devtools-mcp
 
 # Test the binary
-ansible-mcp serve --help
+ansible-devtools-mcp serve --help
 ```
 
 Should resolve all 43 dependencies and create the executable without errors.
@@ -119,7 +119,7 @@ While waiting for PyPI configuration to be completed, users can install from Tes
 uv tool install \
   --index-url https://test.pypi.org/simple \
   --extra-index-url https://pypi.org/simple \
-  ansible-mcp==0.1.0
+  ansible-devtools-mcp==0.1.0
 ```
 
 #### To update documentation for TestPyPI fallback:
@@ -133,7 +133,7 @@ Add to README Installation section:
 uv tool install \
   --index-url https://test.pypi.org/simple \
   --extra-index-url https://pypi.org/simple \
-  ansible-mcp==0.1.0
+  ansible-devtools-mcp==0.1.0
 ```
 ```
 
@@ -146,7 +146,7 @@ uv tool install \
 This indicates the OIDC token claims don't match your configured publisher. Verify:
 
 1. **Owner** matches exactly: `shreyanshjain7174`
-2. **Repository** matches exactly: `ansible-mcp`
+2. **Repository** matches exactly: `ansible-devtools-mcp`
 3. **Workflow name** matches: `publish.yml`
 4. **Environment name** matches: `pypi`
 5. **Workflow ref** is correct for how you're triggering publishes
@@ -155,7 +155,7 @@ This indicates the OIDC token claims don't match your configured publisher. Veri
 
 Ensure GitHub environment `pypi` exists in your repository:
 
-1. Go to https://github.com/shreyanshjain7174/ansible-mcp/settings/environments
+1. Go to https://github.com/shreyanshjain7174/ansible-devtools-mcp/settings/environments
 2. Create environment `pypi` if it doesn't exist
 3. No special configuration needed (you can leave it empty)
 

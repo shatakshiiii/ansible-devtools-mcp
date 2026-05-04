@@ -4,9 +4,9 @@ import json
 from dataclasses import asdict, replace
 from typing import Any
 
-from ansible_mcp.context import WorkspaceContext
-from ansible_mcp.plugins import AnsibleMCPPlugin, ToolSpec
-from ansible_mcp.token_budget import TokenBudget, compress_description, format_tool_output
+from ansible_devtools_mcp.context import WorkspaceContext
+from ansible_devtools_mcp.plugins import AnsibleMCPPlugin, ToolSpec
+from ansible_devtools_mcp.token_budget import TokenBudget, compress_description, format_tool_output
 
 
 class PluginRouter:

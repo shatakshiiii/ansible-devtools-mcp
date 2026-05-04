@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from ansible_mcp.installer import install_client_config
+from ansible_devtools_mcp.installer import install_client_config
 
 
 def _read_json(path: Path) -> dict[str, object]:
@@ -23,9 +23,9 @@ def test_install_copilot_user_scope_on_macos_path(tmp_path: Path) -> None:
     expected = tmp_path / "Library" / "Application Support" / "Code" / "User" / "mcp.json"
     assert result.config_path == expected
     payload = _read_json(expected)
-    server = payload["servers"]["ansible-mcp"]
+    server = payload["servers"]["ansible-devtools-mcp"]
     assert server["type"] == "stdio"
-    assert server["command"] == "ansible-mcp"
+    assert server["command"] == "ansible-devtools-mcp"
 
 
 def test_install_claude_user_scope(tmp_path: Path) -> None:
@@ -35,12 +35,12 @@ def test_install_claude_user_scope(tmp_path: Path) -> None:
         home_dir=tmp_path,
     )
 
-    expected = tmp_path / ".claude" / "mcp_servers.json"
+    expected = tmp_path / ".claude" / "mcp.json"
     assert result.config_path == expected
     payload = _read_json(expected)
     assert "mcpServers" in payload
-    server = payload["mcpServers"]["ansible-mcp"]
-    assert server["command"] == "ansible-mcp"
+    server = payload["mcpServers"]["ansible-devtools-mcp"]
+    assert server["command"] == "ansible-devtools-mcp"
     assert server["args"] == ["serve", "--stdio"]
 
 
@@ -58,8 +58,8 @@ def test_install_cursor_project_scope(tmp_path: Path) -> None:
     assert result.config_path == expected
     payload = _read_json(expected)
     assert "mcpServers" in payload
-    server = payload["mcpServers"]["ansible-mcp"]
-    assert server["command"] == "ansible-mcp"
+    server = payload["mcpServers"]["ansible-devtools-mcp"]
+    assert server["command"] == "ansible-devtools-mcp"
 
 
 def test_install_project_scope_requires_workspace_root() -> None:

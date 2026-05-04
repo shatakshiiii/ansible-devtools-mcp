@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ansible_mcp.plugins import (
+from ansible_devtools_mcp.plugins import (
     AnsibleMCPPlugin,
     ToolResult,
     ToolSpec,
