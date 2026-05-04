@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality (ruff + mypy)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Upgrade pip & install build tools
+        run: pip install --upgrade pip setuptools wheel
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run ruff
+        run: ruff check src tests
+
+      - name: Run mypy
+        run: mypy --strict src
+
+  unit-tests:
+    name: Unit tests (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Upgrade pip & install build tools
+        run: pip install --upgrade pip setuptools wheel
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run unit tests
+        run: pytest tests/unit -v --tb=short
+
+  integration-tests:
+    name: Integration tests (real ansible tools)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Upgrade pip & install build tools
+        run: pip install --upgrade pip setuptools wheel
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run hostile-env lint regression
+        env:
+          HOME: /var/empty
+          XDG_CACHE_HOME: /var/empty
+          ANSIBLE_HOME: /var/empty
+        run: pytest tests/integration/test_real_tools.py::test_lint_plugin_real_calls_hostile_env -v --tb=short -m integration
+
+      - name: Run integration tests
+        run: pytest tests/integration -v --tb=short -m integration
+
+      - name: Integration diagnostics (on failure)
+        if: failure()
+        run: |
+          python -V
+          pip --version
+          pip show ansible-lint ansible-core || true
+          which ansible-lint || true
+          ansible-lint --version || true
+          env | sort | grep -E '^(HOME|XDG_CACHE_HOME|ANSIBLE_HOME|PATH)=' || true
