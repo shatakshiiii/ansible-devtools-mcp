@@ -48,9 +48,10 @@ def _target_for_client(
             raise ValueError("workspace_root is required for project scope")
         if client == "copilot":
             return workspace_root / ".vscode" / "mcp.json", "servers"
+        if client == "claude":
+            return workspace_root / ".mcp.json", "mcpServers"
         if client == "cursor":
             return workspace_root / ".cursor" / "mcp.json", "mcpServers"
-        raise ValueError("Project scope is not supported for client 'claude'")
 
     if client == "copilot":
         return (
@@ -62,7 +63,7 @@ def _target_for_client(
             "servers",
         )
     if client == "claude":
-        return home_dir / ".claude" / "mcp.json", "mcpServers"
+        return home_dir / ".claude.json", "mcpServers"
     if client == "cursor":
         return home_dir / ".cursor" / "mcp.json", "mcpServers"
 
